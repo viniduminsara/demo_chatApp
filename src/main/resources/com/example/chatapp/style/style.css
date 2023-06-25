@@ -1,0 +1,73 @@
+.receive-text {
+    -fx-font-size: 12;
+    -fx-text-fill: #1ea21e;
+}
+
+.receive-box {
+    -fx-background-color: #DCF8C6;
+    -fx-padding: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #8EDF8D;
+    -fx-border-width: 1;
+    -fx-start-margin: 10px;
+}
+
+.send-box{
+    -fx-background-color: #ffe2d6;
+    -fx-padding: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #d59378;
+    -fx-border-width: 1;
+    -fx-start-margin: 10px;
+}
+
+.send-text{
+    -fx-font-size: 12;
+    -fx-text-fill: #e0602d;
+    -fx-alignment: baseline-right;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.background{
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal{
+    -fx-opacity: 0;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0
+}
+
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb{
+    -fx-background-color: transparent;
+}
+.scroll-bar:vertical .thumb:hover{
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow {
+    -fx-background-color: transparent;
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="595.0" prefWidth="600.0" style="-fx-background-color: #e0fbfc;" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.chatapp.controller.ClientFormController">
+   <children>
+      <ImageView fitHeight="530.0" fitWidth="600.0" layoutX="1.0" layoutY="65.0" opacity="0.4" pickOnBounds="true">
+         <image>
+            <Image url="@../img/background.jpg" />
+         </image>
+      </ImageView>
+      <TextField fx:id="txtMessage" layoutX="28.0" layoutY="539.0" onAction="#txtMessageOnAction" prefHeight="31.0" prefWidth="464.0" promptText="Type here" />
+      <Button layoutX="504.0" layoutY="539.0" mnemonicParsing="false" onAction="#btnSendOnAction" prefHeight="31.0" prefWidth="73.0" style="-fx-background-color: #84dcc6;" text="Send" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <Label layoutX="262.0" layoutY="10.0" text="Client" textFill="#84dcc6">
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font>
+      </Label>
+      <Button contentDisplay="GRAPHIC_ONLY" layoutX="450.0" layoutY="539.0" mnemonicParsing="false" onAction="#btnAttachmentOnAction" style="-fx-background-color: transparent;" text="Button">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="22.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../img/attachment.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ScrollPane fx:id="scrollPane" layoutX="30.0" layoutY="65.0" prefHeight="456.0" prefWidth="539.0">
+         <content>
+            <VBox fx:id="vBox" prefHeight="453.0" prefWidth="535.0" styleClass="background" />
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
