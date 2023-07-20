@@ -18,6 +18,7 @@ import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
 
 public class ClientFormController{
 
@@ -36,15 +37,20 @@ public class ClientFormController{
 
     File file;
 
-    BufferedReader reader;
+    DataInputStream inputStream;
 
-    PrintWriter writer;
+    DataOutputStream outputStream;
 
     @FXML
     void btnSendOnAction(ActionEvent event) throws IOException {
         if (!txtMessage.getText().isEmpty()) {
             if (txtMessage.getText().equals("1 image selected")) {
-                writer.println("img" + file.getPath());
+                byte[] bytes = Files.readAllBytes(file.toPath());
+                outputStream.writeUTF("img");
+                outputStream.writeInt(bytes.length);
+                outputStream.write(bytes);
+                outputStream.flush();
+//                writer.println("img" + file.getPath());
                 Image image = new Image(file.toURI().toString());
                 ImageView imageView = new ImageView(image);
 
@@ -66,7 +72,8 @@ public class ClientFormController{
                 txtMessage.setEditable(true);
                 txtMessage.clear();
             } else {
-                writer.println(txtMessage.getText());
+//                writer.println(txtMessage.getText());
+                outputStream.writeUTF(txtMessage.getText());
                 TextFlow tempFlow = new TextFlow();
                 Text text = new Text(txtMessage.getText());
                 text.setWrappingWidth(200);
@@ -104,15 +111,6 @@ public class ClientFormController{
         if (file != null) {
             txtMessage.setText("1 image selected");
             txtMessage.setEditable(false);
-//               try {
-//                   int i;
-//                    FileInputStream fis = new FileInputStream(file);
-//                    while ((i = fis.read()) > -1) {
-//                        outputStream.write(i);
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
         }
     }
 
@@ -129,21 +127,16 @@ public class ClientFormController{
             try {
                 socket = new Socket("localhost",4005);
 
-                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                writer = new PrintWriter(socket.getOutputStream(), true);
+                inputStream = new DataInputStream(socket.getInputStream());
+                outputStream = new DataOutputStream(socket.getOutputStream());
 
                 while (true){
-                    message = reader.readLine();
-                    String firstChars = "";
-                    if (message.length() > 3) {
-                        firstChars = message.substring(0, 3);
-
-                    }
-                    if (firstChars.equalsIgnoreCase("img")){
-                        message = message.substring(3);
-                        File receives = new File(message);
-                        Image image = new Image(receives.toURI().toString());
-                        ImageView imageView2 = new ImageView(image);
+                    message = inputStream.readUTF();
+                    if (message.equalsIgnoreCase("img")){
+                        int size = inputStream.readInt();
+                        byte[] bytes = new byte[size];
+                        inputStream.readFully(bytes);
+                        ImageView imageView2 = new ImageView(new Image(new ByteArrayInputStream(bytes)));
 
                         imageView2.setFitHeight(150);
                         imageView2.setFitWidth(180);

@@ -20,6 +20,7 @@ import javafx.stage.FileChooser;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 
 public class ServerFormController{
 
@@ -36,19 +37,25 @@ public class ServerFormController{
 
     private Socket socket;
 
-    private BufferedReader reader;
+    private DataInputStream inputStream;
 
-    private PrintWriter writer;
+    private DataOutputStream outputStream;
 
     private String message = "";
 
     private File file;
 
     @FXML
-    void btnSendOnAction(ActionEvent event) {
+    void btnSendOnAction(ActionEvent event) throws IOException {
         if (!txtMessage.getText().isEmpty()) {
             if (txtMessage.getText().equals("1 image selected")) {
-                writer.println("img" + file.getPath());
+                byte[] bytes = Files.readAllBytes(file.toPath());
+                outputStream.writeUTF("img");
+                outputStream.writeInt(bytes.length);
+                outputStream.write(bytes);
+                outputStream.flush();
+//                writer.println("img" + file.getPath());
+
                 Image image = new Image(file.toURI().toString());
                 ImageView imageView = new ImageView(image);
 
@@ -72,7 +79,8 @@ public class ServerFormController{
                 txtMessage.setEditable(true);
                 txtMessage.clear();
             } else {
-                writer.println(txtMessage.getText());
+//                writer.println(txtMessage.getText());
+                outputStream.writeUTF(txtMessage.getText());
                 TextFlow tempFlow = new TextFlow();
                 Text text = new Text(txtMessage.getText());
                 text.setWrappingWidth(200);
@@ -115,7 +123,7 @@ public class ServerFormController{
     }
 
     @FXML
-    void txtMessageOnAction(ActionEvent event) {
+    void txtMessageOnAction(ActionEvent event) throws IOException {
         btnSendOnAction(event);
     }
 
@@ -129,21 +137,16 @@ public class ServerFormController{
 
                 socket = serverSocket.accept();
 
-                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                writer = new PrintWriter(socket.getOutputStream(), true);
+                inputStream = new DataInputStream(socket.getInputStream());
+                outputStream = new DataOutputStream(socket.getOutputStream());
 
                 while (true) {
-                    message = reader.readLine();
-                    String firstChars = "";
-                    if (message.length() > 3) {
-                        firstChars = message.substring(0, 3);
-
-                    }
-                    if (firstChars.equalsIgnoreCase("img")){
-                        message = message.substring(3);
-                        File receives = new File(message);
-                        Image image = new Image(receives.toURI().toString());
-                        ImageView imageView2 = new ImageView(image);
+                    message = inputStream.readUTF();
+                    if (message.equalsIgnoreCase("img")){
+                        int size = inputStream.readInt();
+                        byte[] bytes = new byte[size];
+                        inputStream.readFully(bytes);
+                        ImageView imageView2 = new ImageView(new Image(new ByteArrayInputStream(bytes)));
 
                         imageView2.setFitHeight(150);
                         imageView2.setFitWidth(180);

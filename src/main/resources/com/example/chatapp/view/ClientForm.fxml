@@ -39,7 +39,7 @@
       </Button>
       <ScrollPane fx:id="scrollPane" layoutX="30.0" layoutY="65.0" prefHeight="456.0" prefWidth="539.0">
          <content>
-            <VBox fx:id="vBox" prefHeight="453.0" prefWidth="535.0" styleClass="background" />
+            <VBox fx:id="vBox" prefHeight="452.0" prefWidth="535.0" styleClass="background" />
          </content>
       </ScrollPane>
    </children>
